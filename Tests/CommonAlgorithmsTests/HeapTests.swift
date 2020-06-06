@@ -20,9 +20,31 @@ final class HeapTests: XCTestCase {
         Heap.sort(&seq, ascending: false)
         XCTAssertEqual(seq, [13, 12, 11, 7, 6, 5])
     }
+    
+    func testPush() {
+        var heap = [10, 14, 19, 26, 31, 42, 27, 44, 33, 35]
+        Heap.push(5, into: &heap, maxHeap: false)
+        XCTAssertEqual(heap, [5, 10, 19, 26, 14, 42, 27, 44, 33, 35, 31])
+        Heap.push(18, into: &heap, maxHeap: false)
+        XCTAssertEqual(heap, [5, 10, 18, 26, 14, 19, 27, 44, 33, 35, 31, 42])
+        heap = [44, 35, 42, 33, 31, 19, 27, 26, 14, 10]
+        Heap.push(18, into: &heap)
+        XCTAssertEqual(heap, [44, 35, 42, 33, 31, 19, 27, 26, 14, 10, 18])
+    }
+    
+    func testPop() {
+        var heap = [10, 14, 19, 26, 31, 42, 27, 44, 33, 35]
+        var head = Heap.pop(from: &heap, maxHeap: false)
+        XCTAssertEqual(head, 10)
+        XCTAssertEqual(heap, [14, 26, 19, 33, 31, 42, 27, 44, 35])
+        heap = [44, 35, 42, 33, 31, 19, 27, 26, 14, 10]
+        head = Heap.pop(from: &heap)
+        XCTAssertEqual(head, 44)
+        XCTAssertEqual(heap, [42, 35, 27, 33, 31, 19, 10, 26, 14])
+    }
 
-    static var allTests = [
-        ("testBuildHeaps", testBuildHeaps),
-        ("testHeapSort", testHeapSort)
-    ]
+//    static var allTests = [
+//        ("testBuildHeaps", testBuildHeaps),
+//        ("testHeapSort", testHeapSort)
+//    ]
 }
