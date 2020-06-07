@@ -11,12 +11,9 @@ extension RandomAccessCollection where Element: Comparable {
     // bisect assumes the array/collection is already sorted in ascending order
     // user need to make sure that lo and hi is within valid range
     // onLeft returns the insert position on the left. Vice versa.
-    func bisect(_ el: Element, lo: Int = 0, hi: Int? = nil, onLeft: Bool = true, ascending: Bool = true) -> Index {
-        var low = index(startIndex, offsetBy: lo)
-        var high = endIndex
-        if let h = hi {
-            high = index(startIndex, offsetBy: h)
-        }
+    func bisect(_ el: Element, lo: Index? = nil, hi: Index? = nil, onLeft: Bool = true, ascending: Bool = true) -> Index {
+        var low = lo ?? startIndex
+        var high = hi ?? endIndex
         var comparator: (Element, Element) -> Bool = ascending ? (<) : (>)
         if !onLeft {
             comparator = ascending ? (<=) : (>=)
