@@ -50,23 +50,44 @@ final class HeapTests: XCTestCase {
     
     func testPushPop() {
         var heap = [10, 14, 19, 26, 31, 42, 27, 44, 33, 35]
-        var head = Heap.pushPop(27, from: &heap, maxHeap: false)
+        var head = Heap.pushPop(27, in: &heap, maxHeap: false)
         XCTAssertEqual(head, 10)
         XCTAssertEqual(heap, [14, 26, 19, 27, 31, 42, 27, 44, 33, 35])
-        head = Heap.pushPop(37, from: &heap, maxHeap: false)
+        head = Heap.pushPop(37, in: &heap, maxHeap: false)
         XCTAssertEqual(head, 14)
         XCTAssertEqual(heap, [19, 26, 27, 27, 31, 42, 37, 44, 33, 35])
-        head = Heap.pushPop(18, from: &heap, maxHeap: false)
+        head = Heap.pushPop(18, in: &heap, maxHeap: false)
         XCTAssertEqual(head, 18)
         XCTAssertEqual(heap, [19, 26, 27, 27, 31, 42, 37, 44, 33, 35])
         
         heap = [44, 35, 42, 33, 31, 19, 27, 26, 14, 10]
-        head = Heap.pushPop(27, from: &heap)
+        head = Heap.pushPop(27, in: &heap)
         XCTAssertEqual(head, 44)
         XCTAssertEqual(heap, [42, 35, 27, 33, 31, 19, 27, 26, 14, 10])
-        head = Heap.pushPop(43, from: &heap)
+        head = Heap.pushPop(43, in: &heap)
         XCTAssertEqual(head, 43)
         XCTAssertEqual(heap, [42, 35, 27, 33, 31, 19, 27, 26, 14, 10])
+    }
+    
+    func testPopPush() {
+        var heap = [10, 14, 19, 26, 31, 42, 27, 44, 33, 35]
+        var head = Heap.popPush(27, in: &heap, maxHeap: false)
+        XCTAssertEqual(head, 10)
+        XCTAssertEqual(heap, [14, 26, 19, 27, 31, 42, 27, 44, 33, 35])
+        head = Heap.popPush(37, in: &heap, maxHeap: false)
+        XCTAssertEqual(head, 14)
+        XCTAssertEqual(heap, [19, 26, 27, 27, 31, 42, 37, 44, 33, 35])
+        head = Heap.popPush(18, in: &heap, maxHeap: false)
+        XCTAssertEqual(head, 19)
+        XCTAssertEqual(heap, [18, 26, 27, 27, 31, 42, 37, 44, 33, 35])
+        
+        heap = [44, 35, 42, 33, 31, 19, 27, 26, 14, 10]
+        head = Heap.popPush(27, in: &heap)
+        XCTAssertEqual(head, 44)
+        XCTAssertEqual(heap, [42, 35, 27, 33, 31, 19, 27, 26, 14, 10])
+        head = Heap.popPush(43, in: &heap)
+        XCTAssertEqual(head, 42)
+        XCTAssertEqual(heap, [43, 35, 27, 33, 31, 19, 27, 26, 14, 10])
     }
 
 //    static var allTests = [

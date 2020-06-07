@@ -9,6 +9,9 @@
  * Created by Hongze Xia on 6/6/20.
  */
 
+/**
+ * collections of binary heap functions
+ */
 enum Heap {
 
     @inlinable static public func getLeftChild(_ i: Int) -> Int {
@@ -26,6 +29,10 @@ enum Heap {
     // default to a max-heap
     // according to `intro to algo` p155-156
     // O(logN) time complexity or O(h) where h is the height of the heap
+    // Note that heapify is different from python's heapify, which is
+    // buildMinHeap in this package
+    // heapify here is equivalent to `_siftup` in python's source code
+    // Ref: https://github.com/python/cpython/blob/master/Lib/heapq.py
     static public func heapify<T:Comparable>(_ seq: inout Array<T>, at i: Int = 0, maxHeap: Bool = true, maxPos: Int? = nil) {
         var rootIdx = i
         let (left, right) = (getLeftChild(i), getRightChild(i))
@@ -60,7 +67,7 @@ enum Heap {
         }
     }
 
-    // linear time
+    // linear time === python's heapify
     static public func buildMinHeap<T: Comparable>(with seq: inout Array<T>) {
         for i in (0..<seq.count / 2).reversed() {
             Heap.heapify(&seq, at: i, maxHeap: false)
@@ -98,6 +105,7 @@ enum Heap {
     }
 
     // O(h) time, top down heapify
+    // raise exception if seq is empty
     static public func pop<T:Comparable>(from seq: inout Array<T>, maxHeap: Bool = true) -> T {
         let item = seq[0] // save the head
         seq[0] = seq[seq.count - 1] // move the tail to the head
@@ -107,7 +115,8 @@ enum Heap {
     }
     
     // O(h) time, slightly better than push and pop seperately
-    static public func pushPop<T:Comparable>(_ item: T, from seq: inout Array<T>, maxHeap: Bool = true) -> T {
+    // raise exception if seq is empty
+    static public func pushPop<T:Comparable>(_ item: T, in seq: inout Array<T>, maxHeap: Bool = true) -> T {
         var comparator: (T, T) -> Bool = (<)
         if !maxHeap {
             comparator = (>)
@@ -117,6 +126,16 @@ enum Heap {
             return item
         }
         
+        let head = seq[0] // save the head
+        seq[0] = item
+        heapify(&seq, at: 0, maxHeap: maxHeap)
+        return head
+    }
+    
+    // O(h) time, slightly better than pop and push seperately
+    // this is called replace in python
+    // raise exception if seq is empty
+    static public func popPush<T:Comparable>(_ item: T, in seq: inout Array<T>, maxHeap: Bool = true) -> T {
         let head = seq[0] // save the head
         seq[0] = item
         heapify(&seq, at: 0, maxHeap: maxHeap)
