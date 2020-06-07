@@ -105,4 +105,21 @@ enum Heap {
         heapify(&seq, at: 0, maxHeap: maxHeap)
         return item
     }
+    
+    // O(h) time, slightly better than push and pop seperately
+    static public func pushPop<T:Comparable>(_ item: T, from seq: inout Array<T>, maxHeap: Bool = true) -> T {
+        var comparator: (T, T) -> Bool = (<)
+        if !maxHeap {
+            comparator = (>)
+        }
+        
+        if comparator(seq[0], item) {
+            return item
+        }
+        
+        let head = seq[0] // save the head
+        seq[0] = item
+        heapify(&seq, at: 0, maxHeap: maxHeap)
+        return head
+    }
 }
