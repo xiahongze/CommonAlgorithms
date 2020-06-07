@@ -36,10 +36,7 @@ enum Heap {
     static public func heapify<T:Comparable>(_ seq: inout Array<T>, at i: Int = 0, maxHeap: Bool = true, maxPos: Int? = nil) {
         var rootIdx = i
         let (left, right) = (getLeftChild(i), getRightChild(i))
-        var comparator: (T, T) -> Bool = (<)
-        if !maxHeap {
-            comparator = (>)
-        }
+        let comparator: (T, T) -> Bool = maxHeap ? (<) : (>)
         let n = maxPos ?? seq.count
 
         // compare the current root with left
@@ -94,10 +91,7 @@ enum Heap {
         seq.append(item)
         var currentIdx = seq.count - 1
         var parentIdx = getParent(currentIdx)
-        var comparator: (T, T) -> Bool = (<)
-        if !maxHeap {
-            comparator = (>)
-        }
+        let comparator: (T, T) -> Bool = maxHeap ? (<) : (>)
         while comparator(seq[parentIdx], seq[currentIdx]) {
             (seq[parentIdx], seq[currentIdx]) = (seq[currentIdx], seq[parentIdx])
             (currentIdx, parentIdx) = (parentIdx, getParent(parentIdx))
@@ -117,10 +111,7 @@ enum Heap {
     // O(h) time, slightly better than push and pop seperately
     // raise exception if seq is empty
     static public func pushPop<T:Comparable>(_ item: T, in seq: inout Array<T>, maxHeap: Bool = true) -> T {
-        var comparator: (T, T) -> Bool = (<)
-        if !maxHeap {
-            comparator = (>)
-        }
+        let comparator: (T, T) -> Bool = maxHeap ? (<) : (>)
         
         if comparator(seq[0], item) {
             return item
