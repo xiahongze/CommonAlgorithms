@@ -1,6 +1,7 @@
 /**
  * Ref:
  * https://en.cppreference.com/w/cpp/algorithm/is_permutation
+ * https://en.cppreference.com/w/cpp/algorithm/next_permutation
  *
  * Created by Hongze Xia on 8/6/20.
  */
@@ -19,7 +20,7 @@ extension RandomAccessCollection where Element: Equatable {
         }
         return c
     }
-    
+
     // O(n^2)
     func isPermutation(of another: Self) -> Bool {
         if another.count != self.count {
@@ -45,5 +46,54 @@ extension RandomAccessCollection where Element: Equatable {
             startThis = index(after: startThis)
         }
         return true
+    }
+}
+
+extension RandomAccessCollection where Element: Comparable, Self: MutableCollection {
+    mutating func reverseInplace(from start: Index? = nil, to end: Index? = nil) {
+        var s = start ?? startIndex
+        var e = end ?? endIndex
+        while s != e {
+            e = index(before: e)
+            if s != e {
+                self.swapAt(s, e)
+                s = index(after: s)
+            }
+        }
+    }
+
+    // Transforms into the next permutation from the set of all permutations
+    // that are lexicographically ordered with respect to operator<.
+    // Returns true if such permutation exists, otherwise transforms the first permutation
+    // as if it is sorted and returns false.
+    // if ascending==false, return the previous permutation
+    mutating func nextPermutation(ascending: Bool = true) -> Bool {
+        if self.count < 2 {
+            return false
+        }
+        var i = index(before: endIndex)
+        let comparator: (Element, Element) -> Bool = ascending ? (<) : (>)
+
+        while true {
+            let i1 = i
+            i = index(before: i)
+            if comparator(self[i], self[i1]) {
+                var i2 = index(before: endIndex)
+                while !comparator(self[i], self[i2]) {
+                    i2 = index(before: i2)
+                }
+                self.swapAt(i, i2)
+                self.reverseInplace(from: i1, to: endIndex)
+                return true
+            }
+            if i == startIndex {
+                self.reverseInplace()
+                return false
+            }
+        }
+    }
+
+    mutating func previousPermutation() -> Bool {
+        return nextPermutation(ascending: false)
     }
 }

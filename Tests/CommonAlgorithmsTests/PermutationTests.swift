@@ -19,4 +19,37 @@ final class PermutationTests: XCTestCase {
         XCTAssertFalse(a.isPermutation(of: [1, 2, 4, 3, 4]))
         XCTAssertFalse(a.isPermutation(of: [1, 2, 4, 3, 5, 6]))
     }
+
+    func testReverse() {
+        var a = [1, 2, 3, 4, 5]
+        a.reverseInplace()
+        XCTAssertEqual(a, [5, 4, 3, 2, 1])
+        a.reverseInplace(from: 0, to: 3)
+        XCTAssertEqual(a, [3, 4, 5, 2, 1])
+        a.reverseInplace(from: 2, to: 5)
+        XCTAssertEqual(a, [3, 4, 1, 2, 5])
+    }
+
+    func testNextPermutation() {
+        var s = ["a", "a", "b"]
+        XCTAssertTrue(s.nextPermutation())
+        XCTAssertEqual(s, ["a", "b", "a"])
+        XCTAssertTrue(s.nextPermutation())
+        XCTAssertEqual(s, ["b", "a", "a"])
+        XCTAssertFalse(s.nextPermutation())
+        XCTAssertEqual(s, ["a", "a", "b"])
+
+        var a = [3, 2, 1]
+        var b = [[Int]]()
+        repeat {
+            b.append(a)
+        } while (a.previousPermutation())
+        XCTAssertEqual(b,
+                       [[3, 2, 1],
+                        [3, 1, 2],
+                        [2, 3, 1],
+                        [2, 1, 3],
+                        [1, 3, 2],
+                        [1, 2, 3]])
+    }
 }

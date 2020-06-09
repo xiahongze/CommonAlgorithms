@@ -16,7 +16,7 @@ This is done as an extension to `RandomAccessCollection`.
 
 Inspired by the implementations in the standard library of C++.
 
-This is done as an extension to `RandomAccessCollection` too.
+This is done as an extension to `RandomAccessCollection` with constraint that `Self` is mutable.
 
 ## MIT Licence
 
